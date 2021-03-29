@@ -1,10 +1,10 @@
 package ru.geekbrains.spring.market.mappers;
 
-import org.mapstruct.Mapper;
+//import org.mapstruct.Mapper;
 import ru.geekbrains.spring.market.model.dtos.ProductDto;
 import ru.geekbrains.spring.market.model.entities.Product;
 
-@Mapper
+//@Mapper
 public interface ProductMapper {
     ProductDto productToProductDto(Product product);
 

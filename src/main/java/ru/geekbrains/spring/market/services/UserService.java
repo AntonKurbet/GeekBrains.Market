@@ -17,13 +17,15 @@ import ru.geekbrains.spring.market.repositories.RoleRepository;
 import ru.geekbrains.spring.market.repositories.UserRepository;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService implements UserDetailsService{
 
     private final UserRepository userRepository;
 
@@ -31,14 +33,14 @@ public class UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final UserMapper userMapper;
+    //private final UserMapper userMapper;
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
     public Optional<UserDto> findDtoByUsername(String username) {
-        return findByLogin(username).map(userMapper::userToUserDto);
+        return findByLogin(username).map(UserDto::new);
     }
 
     public Optional<User> findByLogin(String login) {
@@ -46,7 +48,7 @@ public class UserService implements UserDetailsService {
     }
 
     public Optional<UserDto> findDtoById(long id) {
-        return findById(id).map(userMapper::userToUserDto);
+        return findById(id).map(UserDto::new);
     }
     public Optional<User> findById(long id) {
         return userRepository.findById(id);
@@ -67,5 +69,14 @@ public class UserService implements UserDetailsService {
             }
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = findByLogin(username)
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found",username)));
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
+                mapRolesToAuthorities(Arrays.asList(user.getRole())));
     }
 }

@@ -7,6 +7,11 @@ import ru.geekbrains.spring.market.model.entities.User;
 @Data
 @NoArgsConstructor
 public class UserDto {
-    private String name;
-    private long score;
+    private String login;
+    private String email;
+
+    public UserDto(User u) {
+        login = u.getLogin();
+        email = u.getEmail();
+    }
 }

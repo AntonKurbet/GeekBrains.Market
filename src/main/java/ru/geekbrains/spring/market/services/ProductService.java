@@ -23,11 +23,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    @Autowired
-    private ProductMapper productMapper;
+//    @Autowired
+//    private ProductMapper productMapper;
 
     public Optional<ProductDto> getById(Long id) {
-        return productRepository.findById(id).map(productMapper::productToProductDto);
+        return productRepository.findById(id).map(ProductDto::new);
     }
 
     public Product add(Product product) {
@@ -54,7 +54,7 @@ public class ProductService {
         } else
             p = productRepository.findAll(PageRequest.of(page, size));
         if (p.getContent().size() > 0)
-            return p.map(productMapper::productToProductDto);
+            return p.map(ProductDto::new);
         else
             throw new ProductNotFoundException("");
     }
