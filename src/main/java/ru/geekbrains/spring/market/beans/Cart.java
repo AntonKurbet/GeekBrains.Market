@@ -1,12 +1,16 @@
-package ru.geekbrains.spring.market.model.entities;
+package ru.geekbrains.spring.market.beans;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.geekbrains.spring.market.exceptions.ProductNotFoundException;
+import ru.geekbrains.spring.market.model.entities.OrderItem;
+import ru.geekbrains.spring.market.model.entities.Product;
 import ru.geekbrains.spring.market.services.ProductService;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,13 +19,15 @@ import java.util.List;
 @Data
 public class Cart {
 
-    private final ProductService productService;
+    @Autowired
+    private ProductService productService;
     private List<OrderItem> items;
-    private int totalPrice;
+    private BigDecimal totalPrice;
 
     @PostConstruct
     public void init() {
         this.items = new ArrayList<>();
+        this.totalPrice = new BigDecimal(0);
     }
 
     public void addToCart(Long id) {
@@ -44,11 +50,12 @@ public class Cart {
     }
 
     public void recalculate() {
-        totalPrice = 0;
+        totalPrice = BigDecimal.ZERO;
         for (OrderItem o : items) {
-            totalPrice += o.getPrice();
+            totalPrice.add(o.getPrice());
         }
     }
+
 }
 
 

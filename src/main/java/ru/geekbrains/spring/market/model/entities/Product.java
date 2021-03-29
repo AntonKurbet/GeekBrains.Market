@@ -1,16 +1,16 @@
 package ru.geekbrains.spring.market.model.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "product")
-@Data
 @NoArgsConstructor
 public class Product {
     @Id
@@ -22,7 +22,7 @@ public class Product {
     private String title;
 
     @Column(name = "price")
-    private int price;
+    private BigDecimal price;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -39,7 +39,7 @@ public class Product {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    public Product(String title, int price) {
+    public Product(String title, BigDecimal price) {
         this.title = title;
         this.price = price;
     }

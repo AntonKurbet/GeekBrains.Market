@@ -12,7 +12,7 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler
     public ResponseEntity<?> handleRuntimeExceptions(RuntimeException e) {
-        log.error(e.getMessage());
+        //log.error(e.getMessage());
         ProductErrorResponse err = new ProductErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }

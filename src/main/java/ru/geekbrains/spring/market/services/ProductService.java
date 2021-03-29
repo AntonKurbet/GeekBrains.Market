@@ -1,5 +1,6 @@
 package ru.geekbrains.spring.market.services;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.spring.market.exceptions.ProductNotFoundException;
+import ru.geekbrains.spring.market.mappers.ProductMapper;
 import ru.geekbrains.spring.market.model.dtos.ProductDto;
 import ru.geekbrains.spring.market.model.entities.Product;
 import ru.geekbrains.spring.market.repositories.ProductRepository;
@@ -21,8 +23,11 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private ProductMapper productMapper;
+
     public Optional<ProductDto> getById(Long id) {
-        return productRepository.findById(id).map(ProductDto::new);
+        return productRepository.findById(id).map(productMapper::productToProductDto);
     }
 
     public Product add(Product product) {
@@ -49,7 +54,7 @@ public class ProductService {
         } else
             p = productRepository.findAll(PageRequest.of(page, size));
         if (p.getContent().size() > 0)
-            return p.map(ProductDto::new);
+            return p.map(productMapper::productToProductDto);
         else
             throw new ProductNotFoundException("");
     }

@@ -1,12 +1,12 @@
 package ru.geekbrains.spring.market.model.entities;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
-@NoArgsConstructor
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
@@ -23,10 +23,10 @@ public class OrderItem {
     private int quantity;
 
     @Column(name = "price_per_product")
-    private int pricePerProduct;
+    private BigDecimal pricePerProduct;
 
     @Column(name = "price")
-    private int price;
+    private BigDecimal price;
 
     public OrderItem(Product product) {
         this.product = product;
@@ -37,11 +37,11 @@ public class OrderItem {
 
     public void incrementQuantity() {
         quantity++;
-        price = quantity * pricePerProduct;
+        price = pricePerProduct.multiply(BigDecimal.valueOf(quantity));
     }
 
     public void decrementQuantity() {
         quantity--;
-        price = quantity * pricePerProduct;
+        price = pricePerProduct.multiply(BigDecimal.valueOf(quantity));
     }
 }

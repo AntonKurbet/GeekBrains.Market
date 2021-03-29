@@ -16,3 +16,10 @@ spring:
   h2:
     console:
       enabled: true
+  jwt:
+    secret: oldestmagicsecret
+#  если bootstrap не заработает
+#  data:
+#    jpa:
+#      repositories:
+#        bootstrap-mode: default

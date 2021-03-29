@@ -1,19 +1,21 @@
 package ru.geekbrains.spring.market.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.geekbrains.spring.market.model.dtos.CartDto;
-import ru.geekbrains.spring.market.model.entities.Cart;
+import ru.geekbrains.spring.market.beans.Cart;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartController {
 
-    private final Cart cart;
+    @Autowired
+    private Cart cart;
 
     @GetMapping
     public CartDto getCart() {

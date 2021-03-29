@@ -41,7 +41,6 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product add(@RequestBody Product product) {
-        product.setId(null);
         return productService.add(product);
     }
 
