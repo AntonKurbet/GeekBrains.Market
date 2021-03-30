@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.spring.market.exceptions.InvalidPageException;
@@ -23,6 +24,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public Page<ProductDto> getAll(
             @RequestParam MultiValueMap<String,String> params,
@@ -33,6 +35,7 @@ public class ProductController {
         return productService.getAll(ProductsSpecifications.build(params), page - 1, size, Optional.of(sort));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ProductDto getById(@PathVariable Long id) {
         return productService.getById(id).orElseThrow(() -> new ProductNotFoundException(id.toString()));
